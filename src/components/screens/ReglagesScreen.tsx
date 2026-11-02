@@ -5,7 +5,7 @@ import { useBoutique } from '@/context/BoutiqueContext';
 import { Store, Phone, Cloud, RotateCcw, Check, Sparkles } from 'lucide-react';
 
 export function ReglagesScreen() {
-  const { boutique, mettreAJourBoutique, reinitialiserDonnees, isSupabaseConnected } = useBoutique();
+  const { boutique, mettreAJourBoutique, reinitialiserDonnees, viderDonneesBoutique, isSupabaseConnected } = useBoutique();
 
   const [nomBoutique, setNomBoutique] = useState(boutique.nom_boutique);
   const [telephone, setTelephone] = useState(boutique.telephone);
@@ -23,10 +23,17 @@ export function ReglagesScreen() {
     setTimeout(() => setSauvegardeOk(false), 3000);
   };
 
+  const handleVider = () => {
+    if (confirm('Voulez-vous vider tous les produits et clients de test pour démarrer votre vraie boutique à zéro ?')) {
+      viderDonneesBoutique();
+      alert('Boutique remise à zéro ! Vous pouvez maintenant ajouter vos vrais produits et clients.');
+    }
+  };
+
   const handleReset = () => {
-    if (confirm('Voulez-vous réinitialiser toutes les données aux valeurs de démonstration ?')) {
+    if (confirm('Voulez-vous recharger les données d\'exemple (pain, café, lait...) ?')) {
       reinitialiserDonnees();
-      alert('Données réinitialisées !');
+      alert('Données d\'exemple rechargées !');
       window.location.reload();
     }
   };
@@ -136,14 +143,21 @@ export function ReglagesScreen() {
         </p>
       </div>
 
-      {/* Réinitialisation */}
-      <div className="pt-2 text-center">
+      {/* Réinitialisation & Vider */}
+      <div className="pt-2 space-y-2 text-center">
+        <button
+          onClick={handleVider}
+          className="w-full py-2.5 px-4 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+        >
+          <span>Démarrer ma vraie boutique à zéro (Effacer les tests)</span>
+        </button>
+
         <button
           onClick={handleReset}
-          className="text-xs text-rose-600 hover:text-rose-800 font-semibold flex items-center justify-center gap-1 mx-auto"
+          className="text-xs text-gray-500 hover:text-gray-700 font-medium flex items-center justify-center gap-1 mx-auto pt-1"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>Réinitialiser les données de démo</span>
+          <span>Recharger les exemples de démonstration</span>
         </button>
       </div>
     </div>

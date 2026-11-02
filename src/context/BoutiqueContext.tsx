@@ -27,6 +27,7 @@ interface BoutiqueContextType {
   ajouterClient: (nom: string, telephone: string) => Promise<Client>;
   mettreAJourBoutique: (infos: Partial<Boutique>) => void;
   reinitialiserDonnees: () => void;
+  viderDonneesBoutique: () => void;
 }
 
 const BoutiqueContext = createContext<BoutiqueContextType | undefined>(undefined);
@@ -213,6 +214,18 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
     localStorage.clear();
   };
 
+  // Vider pour démarrer une vraie boutique vierge
+  const viderDonneesBoutique = () => {
+    setProduits([]);
+    setClients([]);
+    setVentes([]);
+    setPaiements([]);
+    localStorage.removeItem('boutik_produits');
+    localStorage.removeItem('boutik_clients');
+    localStorage.removeItem('boutik_ventes');
+    localStorage.removeItem('boutik_paiements');
+  };
+
   return (
     <BoutiqueContext.Provider
       value={{
@@ -230,6 +243,7 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
         ajouterClient,
         mettreAJourBoutique,
         reinitialiserDonnees,
+        viderDonneesBoutique,
       }}
     >
       {children}
