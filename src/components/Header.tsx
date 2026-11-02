@@ -2,11 +2,13 @@
 
 import React from 'react';
 import { useBoutique } from '@/context/BoutiqueContext';
-import { Store, Wifi, WifiOff, Cloud, Database } from 'lucide-react';
+import { Store, Wifi, WifiOff, Cloud, Database, Sparkles } from 'lucide-react';
+import { AbonnementModal } from '@/components/AbonnementModal';
 
 export function Header() {
   const { boutique, isOnline, isSupabaseConnected } = useBoutique();
   const [dateAffichee, setDateAffichee] = React.useState('');
+  const [modalAbonnement, setModalAbonnement] = React.useState(false);
 
   React.useEffect(() => {
     setDateAffichee(
@@ -31,30 +33,33 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
+          {/* Badge Abonnement / Essai */}
+          <button
+            onClick={() => setModalAbonnement(true)}
+            className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 hover:bg-emerald-200 transition-colors shadow-2xs"
+            title="Gérer l'abonnement Wave"
+          >
+            <Sparkles className="w-3 h-3 text-emerald-600" />
+            <span>Essai : 14j</span>
+          </button>
+
           {/* Badge Connexion Réseau */}
           <span
-            className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full ${
-              isOnline ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'
+            className={`inline-flex items-center gap-1 text-[11px] font-medium px-1.5 py-0.5 rounded-full ${
+              isOnline ? 'bg-gray-100 text-gray-700' : 'bg-amber-100 text-amber-800'
             }`}
-            title={isOnline ? 'Connecté' : 'Mode hors-ligne'}
+            title={isOnline ? 'En ligne' : 'Hors-ligne'}
           >
-            {isOnline ? <Wifi className="w-3 h-3" /> : <WifiOff className="w-3 h-3" />}
-            {isOnline ? 'En ligne' : 'Hors-ligne'}
-          </span>
-
-          {/* Badge Cloud / Supabase */}
-          <span
-            className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full ${
-              isSupabaseConnected ? 'bg-blue-50 text-blue-700' : 'bg-gray-100 text-gray-600'
-            }`}
-            title={isSupabaseConnected ? 'Synchronisé avec Supabase' : 'Stockage local (MVP)'}
-          >
-            {isSupabaseConnected ? <Cloud className="w-3 h-3" /> : <Database className="w-3 h-3" />}
-            {isSupabaseConnected ? 'Cloud' : 'Local'}
+            {isOnline ? <Wifi className="w-3 h-3 text-emerald-600" /> : <WifiOff className="w-3 h-3" />}
           </span>
         </div>
       </div>
+
+      <AbonnementModal
+        ouvert={modalAbonnement}
+        onFermer={() => setModalAbonnement(false)}
+      />
     </header>
   );
 }

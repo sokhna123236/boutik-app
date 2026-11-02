@@ -132,6 +132,33 @@ export function ReglagesScreen() {
         </p>
       </div>
 
+      {/* Abonnement Wave */}
+      <div className="bg-gradient-to-br from-emerald-700 to-teal-800 text-white p-5 rounded-2xl shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-emerald-300" />
+            <h2 className="font-bold text-white text-base">Abonnement BoutikApp</h2>
+          </div>
+          <span className="text-[10px] font-bold bg-white/20 px-2.5 py-0.5 rounded-full">
+            Essai : 14 jours restants
+          </span>
+        </div>
+        <p className="text-xs text-emerald-100 mt-2 leading-relaxed">
+          Tarif : <strong>3 000 FCFA / mois</strong>. Pour renouveler votre accès, envoyez votre paiement par Wave au :
+        </p>
+        <div className="mt-3 bg-white/10 backdrop-blur-xs p-3 rounded-xl flex items-center justify-between border border-white/20">
+          <span className="font-black text-lg text-white tracking-wider">77 713 21 44</span>
+          <a
+            href="https://wa.me/221777132144?text=Bonjour,%20je%20souhaite%20renouveler%20mon%20abonnement%20BoutikApp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs font-bold bg-white text-emerald-800 px-3 py-1.5 rounded-lg active:scale-95 shadow-xs"
+          >
+            Confirmer sur WhatsApp
+          </a>
+        </div>
+      </div>
+
       {/* Guide Business & Pitch MVP */}
       <div className="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200">
         <div className="flex items-center gap-2 text-emerald-900 font-bold text-xs mb-1">
