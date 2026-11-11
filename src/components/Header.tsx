@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { useBoutique } from '@/context/BoutiqueContext';
-import { Store, Wifi, WifiOff, Cloud, Database, Sparkles } from 'lucide-react';
+import { Store, Wifi, WifiOff, Sparkles, LogOut } from 'lucide-react';
 import { AbonnementModal } from '@/components/AbonnementModal';
 
-export function Header() {
+export function Header({ onLogout }: { onLogout?: () => void }) {
   const { boutique, isOnline, isSupabaseConnected } = useBoutique();
   const [dateAffichee, setDateAffichee] = React.useState('');
   const [modalAbonnement, setModalAbonnement] = React.useState(false);
@@ -53,6 +53,17 @@ export function Header() {
           >
             {isOnline ? <Wifi className="w-3 h-3 text-emerald-600" /> : <WifiOff className="w-3 h-3" />}
           </span>
+
+          {/* Bouton Déconnexion */}
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              title="Se déconnecter"
+              className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
       </div>
 
