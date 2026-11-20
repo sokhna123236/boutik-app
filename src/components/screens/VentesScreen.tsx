@@ -321,7 +321,7 @@ export function VentesScreen() {
               </div>
               <input
                 type="number"
-                step="50"
+                step="any"
                 value={montantRecu}
                 onChange={e => setMontantRecu(Number(e.target.value) || 0)}
                 className="w-full text-xl font-bold p-3 rounded-xl border border-gray-300 text-center focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"

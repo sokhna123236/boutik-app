@@ -278,7 +278,7 @@ export function DettesScreen() {
               </label>
               <input
                 type="number"
-                step="50"
+                step="any"
                 value={montantRemboursement}
                 onChange={e => setMontantRemboursement(Number(e.target.value) || 0)}
                 className="w-full text-xl font-bold p-3 rounded-xl border border-gray-300 text-center focus:ring-2 focus:ring-emerald-500"
@@ -375,7 +375,7 @@ export function DettesScreen() {
                 </label>
                 <input
                   type="number"
-                  step="50"
+                  step="any"
                   min="0"
                   placeholder="0 si aucune dette pour l'instant"
                   value={detteInitiale}
