@@ -24,7 +24,7 @@ interface BoutiqueContextType {
   enregistrerPaiementDette: (clientId: string, montant: number, modePaiement: 'especes' | 'wave' | 'orange_money') => Promise<void>;
   ajouterProduit: (nouveau: Omit<Produit, 'id'>) => Promise<void>;
   mettreAJourStock: (produitId: string, quantiteDelta: number) => Promise<void>;
-  ajouterClient: (nom: string, telephone: string) => Promise<Client>;
+  ajouterClient: (nom: string, telephone: string, soldeDetteInitial?: number) => Promise<Client>;
   mettreAJourBoutique: (infos: Partial<Boutique>) => void;
   reinitialiserDonnees: () => void;
   viderDonneesBoutique: () => void;
@@ -186,13 +186,13 @@ export function BoutiqueProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  // 5. Ajouter un client rapidement
-  const ajouterClient = async (nom: string, telephone: string): Promise<Client> => {
+  // 5. Ajouter un client rapidement (avec dette initiale optionnelle)
+  const ajouterClient = async (nom: string, telephone: string, soldeDetteInitial: number = 0): Promise<Client> => {
     const nouveauClient: Client = {
       id: `c_${Date.now()}`,
       nom,
       telephone,
-      solde_dette: 0,
+      solde_dette: soldeDetteInitial,
       created_at: new Date().toISOString(),
     };
     setClients(prev => [...prev, nouveauClient]);

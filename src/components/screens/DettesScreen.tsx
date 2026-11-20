@@ -20,6 +20,7 @@ export function DettesScreen() {
   const [modalNouveauClient, setModalNouveauClient] = useState(false);
   const [nomClient, setNomClient] = useState('');
   const [telClient, setTelClient] = useState('');
+  const [detteInitiale, setDetteInitiale] = useState<number>(0);
 
   // Filtrer les clients ayant une dette > 0
   const clientsDebiteurs = clients
@@ -47,9 +48,12 @@ export function DettesScreen() {
     e.preventDefault();
     if (!nomClient.trim()) return;
 
-    await ajouterClient(nomClient.trim(), telClient.trim());
+    // Crée le client avec la dette initiale saisie (0 par défaut)
+    await ajouterClient(nomClient.trim(), telClient.trim(), detteInitiale);
+
     setNomClient('');
     setTelClient('');
+    setDetteInitiale(0);
     setModalNouveauClient(false);
   };
 
@@ -293,10 +297,13 @@ export function DettesScreen() {
       {modalNouveauClient && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl">
-            <h3 className="font-bold text-gray-900 text-base mb-3">Nouveau client débiteur</h3>
+            <h3 className="font-bold text-gray-900 text-base mb-1">Nouveau client débiteur</h3>
+            <p className="text-xs text-gray-500 mb-4">
+              Saisissez la dette actuelle pour qu'il apparaisse dans le carnet.
+            </p>
             <form onSubmit={creerNouveauClient}>
               <div className="mb-3">
-                <label className="block text-xs font-semibold text-gray-700 mb-1">Nom complet</label>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">Nom complet *</label>
                 <input
                   type="text"
                   required
@@ -306,7 +313,7 @@ export function DettesScreen() {
                   className="w-full p-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-3">
                 <label className="block text-xs font-semibold text-gray-700 mb-1">
                   Numéro de téléphone WhatsApp
                 </label>
@@ -318,17 +325,36 @@ export function DettesScreen() {
                   className="w-full p-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
+              <div className="mb-4">
+                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                  Dette actuelle (FCFA) *
+                </label>
+                <input
+                  type="number"
+                  required
+                  min={1}
+                  step={50}
+                  placeholder="Ex: 2500"
+                  value={detteInitiale || ''}
+                  onChange={e => setDetteInitiale(Number(e.target.value) || 0)}
+                  className="w-full p-2.5 rounded-xl border border-rose-300 bg-rose-50 text-sm font-bold text-rose-700 focus:ring-2 focus:ring-rose-400"
+                />
+                <p className="text-[11px] text-gray-400 mt-1">
+                  Montant que le client vous doit déjà
+                </p>
+              </div>
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={() => setModalNouveauClient(false)}
+                  onClick={() => { setModalNouveauClient(false); setDetteInitiale(0); setNomClient(''); setTelClient(''); }}
                   className="flex-1 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-semibold text-sm"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-700"
+                  disabled={!nomClient.trim() || detteInitiale <= 0}
+                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 disabled:bg-gray-300 text-white font-semibold text-sm hover:bg-emerald-700"
                 >
                   Ajouter
                 </button>
